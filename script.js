@@ -8,7 +8,7 @@ const POSITIONS = [
 
 const CANDIDATES = {
   president: [
-    { id: 'p1', name: 'Ryan amaw',    sub: 'Grade 7 banga-A', ava: '👩' },
+    { id: 'p1', name: 'Ryan amaw',    sub: 'Grade 7 banga-A',<img src="aurafarm.jpg" alt="Girl in a jacket" width="500" height="600"> },
     { id: 'p2', name: 'Sila',  sub: 'Grade 8',    ava: '👨' },
     { id: 'p3', name: 'Ako',       sub: 'Grade 7 banga-A', ava: '👩' },
   ],
@@ -321,5 +321,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('admin-pass')
     .addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
 });
+
 
 
