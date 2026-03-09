@@ -8,22 +8,22 @@ const POSITIONS = [
 
 const CANDIDATES = {
   president: [
-    { id: 'p1', name: 'Andrea Reyes',    sub: 'Grade 12 - STEM A', ava: '👩' },
-    { id: 'p2', name: 'Carlos Mendoza',  sub: 'Grade 12 - ABM',    ava: '👨' },
-    { id: 'p3', name: 'Sofia Lim',       sub: 'Grade 11 - STEM B', ava: '👩' },
+    { id: 'p1', name: 'Ryan amaw',    sub: 'Grade 12 - STEM A', ava: '👩' },
+    { id: 'p2', name: 'Sila',  sub: 'Grade 12 - ABM',    ava: '👨' },
+    { id: 'p3', name: 'Ako',       sub: 'Grade 11 - STEM B', ava: '👩' },
   ],
   vp: [
-    { id: 'v1', name: 'Miguel Torres',   sub: 'Grade 12 - STEM A', ava: '👨' },
-    { id: 'v2', name: 'Jasmine Cruz',    sub: 'Grade 11 - ABM',    ava: '👩' },
-    { id: 'v3', name: 'Ryan Santos',     sub: 'Grade 12 - STEM B', ava: '👨' },
+    { id: 'v1', name: 'Eric',   sub: 'Grade 12 - STEM A', ava: '👨' },
+    { id: 'v2', name: 'Monsters',    sub: 'Grade 11 - ABM',    ava: '👩' },
+    { id: 'v3', name: 'Cantutay',     sub: 'Grade 12 - STEM B', ava: '👨' },
   ],
   secretary: [
-    { id: 's1', name: 'Lia Fernandez',   sub: 'Grade 11 - STEM A', ava: '👩' },
-    { id: 's2', name: 'Paolo Dela Cruz', sub: 'Grade 12 - ABM',    ava: '👨' },
+    { id: 's1', name: 'SSSloy',   sub: 'Grade 11 - STEM A', ava: '👩' },
+    { id: 's2', name: 'Dime', sub: 'Grade 12 - ABM',    ava: '👨' },
   ],
   treasurer: [
-    { id: 't1', name: 'Nina Villanueva', sub: 'Grade 12 - STEM B', ava: '👩' },
-    { id: 't2', name: 'Jeric Bautista',  sub: 'Grade 11 - STEM A', ava: '👨' },
+    { id: 't1', name: 'AW mao diay', sub: 'Grade 12 - STEM B', ava: '👩' },
+    { id: 't2', name: 'Ano JAy',  sub: 'Grade 11 - STEM A', ava: '👨' },
   ],
 };
 
@@ -321,3 +321,4 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('admin-pass')
     .addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
 });
+
