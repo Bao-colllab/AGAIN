@@ -8,22 +8,22 @@ const POSITIONS = [
 
 const CANDIDATES = {
   president: [
-    { id: 'p1', name: 'Ryan amaw',    sub: 'Grade 12 - STEM A', ava: '👩' },
-    { id: 'p2', name: 'Sila',  sub: 'Grade 12 - ABM',    ava: '👨' },
-    { id: 'p3', name: 'Ako',       sub: 'Grade 11 - STEM B', ava: '👩' },
+    { id: 'p1', name: 'Ryan amaw',    sub: 'Grade 7 banga-A', ava: '👩' },
+    { id: 'p2', name: 'Sila',  sub: 'Grade 8',    ava: '👨' },
+    { id: 'p3', name: 'Ako',       sub: 'Grade 7 banga-A', ava: '👩' },
   ],
   vp: [
     { id: 'v1', name: 'Eric',   sub: 'Grade 12 - STEM A', ava: '👨' },
-    { id: 'v2', name: 'Monsters',    sub: 'Grade 11 - ABM',    ava: '👩' },
-    { id: 'v3', name: 'Cantutay',     sub: 'Grade 12 - STEM B', ava: '👨' },
+    { id: 'v2', name: 'Monsters',    sub: 'Grade 9 - ABM',    ava: '👩' },
+    { id: 'v3', name: 'Cantutay',     sub: 'Grade 7 - banga B', ava: '👨' },
   ],
   secretary: [
-    { id: 's1', name: 'SSSloy',   sub: 'Grade 11 - STEM A', ava: '👩' },
-    { id: 's2', name: 'Dime', sub: 'Grade 12 - ABM',    ava: '👨' },
+    { id: 's1', name: 'SSSloy',   sub: 'Grade 11 - yeah', ava: '👩' },
+    { id: 's2', name: 'Dime', sub: 'Grade 12 - owyeah',    ava: '👨' },
   ],
   treasurer: [
-    { id: 't1', name: 'AW mao diay', sub: 'Grade 12 - STEM B', ava: '👩' },
-    { id: 't2', name: 'Ano JAy',  sub: 'Grade 11 - STEM A', ava: '👨' },
+    { id: 't1', name: 'AW mao diay', sub: 'Grade 12 - owyeah', ava: '👩' },
+    { id: 't2', name: 'Ano JAy',  sub: 'Grade 11 - SIKE', ava: '👨' },
   ],
 };
 
@@ -321,4 +321,5 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('admin-pass')
     .addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
 });
+
 
