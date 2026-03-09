@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SSLG Voting Demo</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <h1>🏛️ SSLG Election 2025</h1>
+  <div class="nav-btns">
+    <button class="active" onclick="goTo('vote')">🗳 Vote</button>
+    <button onclick="goTo('results')">📊 Results</button>
+    <button onclick="goTo('admin-login')">🔒 Admin</button>
+  </div>
+</nav>
+
+<!-- ── VOTE PAGE ── -->
+<div id="pg-vote" class="page show">
+
+  <!-- STEP 1: VERIFY -->
+  <div id="step-verify">
+    <div class="hero">
+      <div class="icon">🏛️</div>
+      <h2>Cast Your Vote</h2>
+      <p>Enter your Student ID to proceed. Each ID can only vote once.</p>
+    </div>
+    <div class="card">
+      <h3>Voter Verification</h3>
+      <label>Full Name</label>
+      <input type="text" id="v-name" placeholder="e.g. Maria Santos">
+      <label>Student ID</label>
+      <input type="text" id="v-id" placeholder="e.g. 2024-00123">
+      <label>Grade & Section</label>
+      <select id="v-section">
+        <option value="">-- Select Section --</option>
+        <option>Grade 7 - Rizal</option>
+        <option>Grade 7 - Bonifacio</option>
+        <option>Grade 8 - Luna</option>
+        <option>Grade 8 - Mabini</option>
+        <option>Grade 9 - Aguinaldo</option>
+        <option>Grade 9 - Del Pilar</option>
+        <option>Grade 10 - Jacinto</option>
+        <option>Grade 10 - Silang</option>
+        <option>Grade 11 - STEM A</option>
+        <option>Grade 11 - STEM B</option>
+        <option>Grade 11 - ABM</option>
+        <option>Grade 12 - STEM A</option>
+        <option>Grade 12 - STEM B</option>
+        <option>Grade 12 - ABM</option>
+      </select>
+      <div class="err" id="err-verify"></div>
+      <button class="btn btn-yellow" onclick="verifyVoter()">Proceed to Ballot →</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: BALLOT -->
+  <div id="step-ballot" style="display:none">
+    <div class="voter-tag" id="voter-tag"></div>
+
+    <div class="card">
+      <h3>👑 President</h3>
+      <div id="cands-president"></div>
+    </div>
+
+    <div class="card">
+      <h3>🎖️ Vice President</h3>
+      <div id="cands-vp"></div>
+    </div>
+
+    <div class="card">
+      <h3>📋 Secretary</h3>
+      <div id="cands-secretary"></div>
+    </div>
+
+    <div class="card">
+      <h3>💰 Treasurer</h3>
+      <div id="cands-treasurer"></div>
+    </div>
+
+    <div class="err" id="err-ballot"></div>
+    <div class="btn-row">
+      <button class="btn btn-outline" onclick="showStep('verify')">← Back</button>
+      <button class="btn btn-yellow" onclick="submitVote()">✅ Submit Vote</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: SUCCESS -->
+  <div id="step-success" style="display:none">
+    <div class="card success">
+      <div class="big">🎉</div>
+      <h2>Vote Submitted!</h2>
+      <p id="success-msg"></p>
+      <div class="ref-box" id="ref-num"></div>
+      <br><br>
+      <button class="btn btn-yellow" style="width:auto;padding:11px 28px;" onclick="goTo('results')">
+        📊 See Results
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── RESULTS PAGE ── -->
+<div id="pg-results" class="page">
+  <div class="page-title">
+    <h2>📊 Live Results</h2>
+    <span class="live-tag"><span class="dot"></span> LIVE</span>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-box">
+      <div class="stat-n" id="r-total">0</div>
+      <div class="stat-l">Total Votes</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-n" id="r-voters">0</div>
+      <div class="stat-l">Voters</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-n" id="r-sections">0</div>
+      <div class="stat-l">Sections</div>
+    </div>
+  </div>
+
+  <div id="results-body"></div>
+</div>
+
+<!-- ── ADMIN LOGIN PAGE ── -->
+<div id="pg-admin-login" class="page">
+  <div class="card narrow">
+    <div class="admin-login-hero">
+      <div>🔒</div>
+      <h2>Admin Login</h2>
+      <p>SSLG Election Commission</p>
+    </div>
+    <label>Password</label>
+    <input type="password" id="admin-pass" placeholder="Enter password"
+           onkeydown="if(event.key==='Enter') doLogin()">
+    <div class="err" id="err-admin"></div>
+    <button class="btn btn-yellow" onclick="doLogin()">Login →</button>
+  </div>
+</div>
+
+<!-- ── ADMIN DASHBOARD PAGE ── -->
+<div id="pg-admin" class="page">
+  <div class="admin-top">
+    <h2>📊 Admin Dashboard</h2>
+    <div class="admin-top-btns">
+      <button class="btn-sm" onclick="renderAdmin()">🔄 Refresh</button>
+      <button class="btn-sm" onclick="exportCSV()">⬇ CSV</button>
+      <button class="btn-sm red" onclick="confirmReset()">🗑 Reset</button>
+      <button class="btn-sm" onclick="goTo('vote')">🚪 Logout</button>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-box"><div class="stat-n" id="a-total">0</div><div class="stat-l">Total Votes</div></div>
+    <div class="stat-box"><div class="stat-n" id="a-voters">0</div><div class="stat-l">Voters</div></div>
+    <div class="stat-box"><div class="stat-n" id="a-sections">0</div><div class="stat-l">Sections</div></div>
+  </div>
+
+  <div class="card">
+    <h3>🏆 Results by Position</h3>
+    <div id="admin-results"></div>
+  </div>
+
+  <div class="card">
+    <div class="log-header">
+      <h3>📋 Voter Log</h3>
+      <input type="text" id="search" placeholder="Search..." oninput="filterLog()">
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>#</th><th>Name</th><th>Student ID</th><th>Section</th><th>Time</th></tr>
+        </thead>
+        <tbody id="voter-tbody"></tbody>
+      </table>
+    </div>
+    <div class="no-data" id="no-voters" style="display:none">No votes yet.</div>
+  </div>
+
+  <div class="card danger-card">
+    <h3>⚠️ Danger Zone</h3>
+    <p>Delete all votes permanently. Cannot be undone.</p>
+    <button class="btn btn-outline-red" onclick="confirmReset()">🗑 Reset All Votes</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
