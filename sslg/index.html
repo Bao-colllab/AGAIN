@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SSLG Election 2025</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <h1>🏛️ SSLG Election 2025</h1>
+  <div class="nav-btns">
+    <button class="active" onclick="goTo('vote')">🗳 Vote</button>
+    <button onclick="goTo('results')">📊 Results</button>
+    <button onclick="goTo('admin-login')">🔒 Admin</button>
+  </div>
+</nav>
+
+<!-- ══ SETUP PAGE ══ -->
+<div id="pg-setup" class="page">
+  <div class="card narrow">
+    <div class="setup-hero">
+      <div>🔧</div>
+      <h2>Connect Database</h2>
+      <p>One-time setup to save votes permanently across all devices.</p>
+    </div>
+
+    <div class="setup-steps">
+      <div class="step"><span class="step-n">1</span>
+        Go to <a href="https://jsonbin.io" target="_blank">jsonbin.io</a> → Sign up free (use Google)
+      </div>
+      <div class="step"><span class="step-n">2</span>
+        After login, click <b>API Keys</b> on the left → Copy your <b>Secret Key</b>
+      </div>
+      <div class="step"><span class="step-n">3</span>
+        Paste it below and click Connect
+      </div>
+    </div>
+
+    <div class="fg">
+      <label>JSONBin Secret Key</label>
+      <input type="text" id="jb-key" placeholder="$2a$10$...">
+    </div>
+    <div class="err" id="err-setup"></div>
+    <button class="btn btn-yellow" onclick="setupConnect()">🔗 Connect & Start</button>
+  </div>
+</div>
+
+<!-- ══ VOTE PAGE ══ -->
+<div id="pg-vote" class="page">
+
+  <!-- STEP: VERIFY -->
+  <div id="step-verify">
+    <div class="hero">
+      <div class="icon">🏛️</div>
+      <h2>Cast Your Vote</h2>
+      <p>Enter your Student ID to proceed. Each ID can only vote once.</p>
+    </div>
+    <div class="card">
+      <h3>📋 Voter Verification</h3>
+      <div class="fg">
+        <label>Full Name</label>
+        <input type="text" id="v-name" placeholder="e.g. Ryan Cantutay">
+      </div>
+      <div class="fg">
+        <label>Student ID</label>
+        <input type="text" id="v-id" placeholder="e.g. 2024-00123">
+      </div>
+      <div class="fg">
+        <label>Grade &amp; Section</label>
+        <select id="v-section">
+          <option value="">-- Select Strand --</option>
+          <option>Grade 11 - STEM</option>
+          <option>Grade 11 - ICT</option>
+          <option>Grade 11 - ABM</option>
+          <option>Grade 11 - HUMMS</option>
+        </select>
+      </div>
+      <div class="err" id="err-verify"></div>
+      <button class="btn btn-yellow" id="btn-proceed" onclick="verifyVoter()">Proceed to Ballot →</button>
+    </div>
+  </div>
+
+  <!-- STEP: BALLOT -->
+  <div id="step-ballot" style="display:none">
+    <div class="voter-tag" id="voter-tag"></div>
+    <div class="card"><h3>👑 President</h3><div id="cands-president"></div></div>
+    <div class="card"><h3>🎖️ Vice President</h3><div id="cands-vp"></div></div>
+    <div class="card"><h3>📋 Secretary</h3><div id="cands-secretary"></div></div>
+    <div class="card"><h3>💰 Treasurer</h3><div id="cands-treasurer"></div></div>
+    <!-- NOTE: To add candidate photos, edit the CANDIDATES object in script.js -->
+    <!-- Set the "img" field to a URL or leave empty for emoji fallback -->
+    <div class="err" id="err-ballot"></div>
+    <div class="btn-row">
+      <button class="btn btn-outline" onclick="showStep('verify')">← Back</button>
+      <button class="btn btn-yellow" id="btn-submit" onclick="submitVote()">✅ Submit Vote</button>
+    </div>
+  </div>
+
+  <!-- STEP: SUCCESS -->
+  <div id="step-success" style="display:none">
+    <div class="card success">
+      <span class="big">🎉</span>
+      <h2>Vote Submitted!</h2>
+      <p id="success-msg"></p>
+      <div class="ref-box" id="ref-num"></div>
+      <br><br>
+      <button class="btn btn-yellow" style="width:auto;padding:11px 28px;" onclick="goTo('results')">
+        📊 See Results
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ RESULTS PAGE ══ -->
+<div id="pg-results" class="page">
+  <div class="page-title">
+    <div>
+      <h2>📊 Live Results</h2>
+      <p style="color:#64748b;font-size:13px;margin-top:3px;">Updates every time you visit</p>
+    </div>
+    <span class="live-tag"><span class="dot"></span> LIVE</span>
+  </div>
+  <div class="stats-row">
+    <div class="stat-box"><div class="stat-n" id="r-total">—</div><div class="stat-l">Total Votes</div></div>
+    <div class="stat-box"><div class="stat-n" id="r-voters">—</div><div class="stat-l">Voters</div></div>
+    <div class="stat-box"><div class="stat-n" id="r-sections">—</div><div class="stat-l">Sections</div></div>
+  </div>
+  <div id="results-body"><div class="spinner"></div></div>
+</div>
+
+<!-- ══ ADMIN LOGIN PAGE ══ -->
+<div id="pg-admin-login" class="page">
+  <div class="card narrow">
+    <div class="setup-hero">
+      <div>🔒</div>
+      <h2>Admin Login</h2>
+      <p>SSLG Election Commission</p>
+    </div>
+    <div class="fg">
+      <label>Password</label>
+      <input type="password" id="admin-pass" placeholder="Enter password"
+             onkeydown="if(event.key==='Enter') doLogin()">
+    </div>
+    <div class="err" id="err-admin"></div>
+    <button class="btn btn-yellow" onclick="doLogin()">Login →</button>
+  </div>
+</div>
+
+<!-- ══ ADMIN DASHBOARD ══ -->
+<div id="pg-admin" class="page">
+  <div class="admin-top">
+    <h2>📊 Admin Dashboard</h2>
+    <div class="admin-top-btns">
+      <button class="btn-sm" onclick="renderAdmin()">🔄 Refresh</button>
+      <button class="btn-sm" onclick="exportCSV()">⬇ CSV</button>
+      <button class="btn-sm red" onclick="confirmReset()">🗑 Reset</button>
+      <button class="btn-sm" onclick="goTo('vote')">🚪 Logout</button>
+    </div>
+  </div>
+  <div class="stats-row">
+    <div class="stat-box"><div class="stat-n" id="a-total">—</div><div class="stat-l">Total Votes</div></div>
+    <div class="stat-box"><div class="stat-n" id="a-voters">—</div><div class="stat-l">Voters</div></div>
+    <div class="stat-box"><div class="stat-n" id="a-sections">—</div><div class="stat-l">Sections</div></div>
+  </div>
+  <div class="card">
+    <h3>🏆 Results by Position</h3>
+    <div id="admin-results"><div class="spinner"></div></div>
+  </div>
+  <div class="card">
+    <div class="log-header">
+      <h3>📋 Voter Log</h3>
+      <input type="text" id="search" placeholder="Search..." oninput="filterLog()">
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Name</th><th>Student ID</th><th>Section</th><th>Time</th></tr></thead>
+        <tbody id="voter-tbody"></tbody>
+      </table>
+    </div>
+    <div class="no-data" id="no-voters" style="display:none">No votes yet.</div>
+  </div>
+  <div class="card danger-card">
+    <h3>⚠️ Danger Zone</h3>
+    <p>Delete all votes permanently. Cannot be undone.</p>
+    <button class="btn-outline-red" onclick="confirmReset()">🗑 Reset All Votes</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
